@@ -1,1 +1,2 @@
 # aaronogawa.github.io
+# Type
