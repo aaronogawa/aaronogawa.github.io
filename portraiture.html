@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio | Portraiture</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="footer-flush">
+    <nav class="navbar navbar-top on-white-page">
+        <div class="nav-container">
+            <a href="index.html" class="logo-link">
+                <div class="logo-placeholder"></div>
+            </a>
+            <ul class="nav-tabs">
+                <li><a href="about.html" class="tab-link">About</a></li>
+                <li><a href="music.html" class="tab-link">Music</a></li>
+                <li><a href="portraiture.html" class="tab-link active">Portraiture</a></li>
+                <li><a href="design.html" class="tab-link">Design</a></li>
+                <li><a href="automotive.html" class="tab-link">Automotive</a></li>
+                <li><a href="contact.html" class="tab-link">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Fixed navbar: fades in when scrolled down -->
+    <nav class="navbar navbar-fixed" aria-hidden="true">
+        <div class="nav-container">
+            <a href="index.html" class="logo-link">
+                <div class="logo-placeholder"></div>
+            </a>
+            <ul class="nav-tabs">
+                <li><a href="about.html" class="tab-link">About</a></li>
+                <li><a href="music.html" class="tab-link">Music</a></li>
+                <li><a href="portraiture.html" class="tab-link active">Portraiture</a></li>
+                <li><a href="design.html" class="tab-link">Design</a></li>
+                <li><a href="automotive.html" class="tab-link">Automotive</a></li>
+                <li><a href="contact.html" class="tab-link">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <section class="music-gallery gallery-two-col" aria-label="Portraiture photographs">
+            <div class="music-photo">
+                <img src="https://picsum.photos/400/300?random=10" alt="Portraiture photo 1">
+            </div>
+            <div class="music-photo">
+                <img src="https://picsum.photos/400/300?random=11" alt="Portraiture photo 2">
+            </div>
+            <div class="music-photo">
+                <img src="https://picsum.photos/400/300?random=12" alt="Portraiture photo 3">
+            </div>
+            <div class="music-photo">
+                <img src="https://picsum.photos/400/300?random=13" alt="Portraiture photo 4">
+            </div>
+            <div class="music-photo">
+                <img src="https://picsum.photos/400/300?random=14" alt="Portraiture photo 5">
+            </div>
+            <div class="music-photo">
+                <img src="https://picsum.photos/400/300?random=15" alt="Portraiture photo 6">
+            </div>
+            <div class="music-photo">
+                <img src="https://picsum.photos/400/300?random=16" alt="Portraiture photo 7">
+            </div>
+            <div class="music-photo">
+                <img src="https://picsum.photos/400/300?random=17" alt="Portraiture photo 8">
+            </div>
+            <div class="music-photo">
+                <img src="https://picsum.photos/400/300?random=18" alt="Portraiture photo 9">
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>© 2026 Aaron Ogawa. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+
+    <div class="music-lightbox" id="music-lightbox" aria-hidden="true">
+        <div class="music-lightbox-overlay"></div>
+        <div class="music-lightbox-content">
+            <button type="button" class="music-lightbox-close" aria-label="Close">&times;</button>
+            <img src="" alt="" class="music-lightbox-img">
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            var lightbox = document.getElementById('music-lightbox');
+            var lightboxImg = lightbox && lightbox.querySelector('.music-lightbox-img');
+            var overlay = lightbox && lightbox.querySelector('.music-lightbox-overlay');
+            var closeBtn = lightbox && lightbox.querySelector('.music-lightbox-close');
+            document.querySelectorAll('.music-photo').forEach(function(cell) {
+                cell.style.cursor = 'pointer';
+                cell.addEventListener('click', function() {
+                    var img = this.querySelector('img');
+                    if (!img || !img.src || !lightboxImg) return;
+                    lightboxImg.src = img.src;
+                    lightboxImg.alt = img.alt || '';
+                    lightbox.setAttribute('aria-hidden', 'false');
+                    lightbox.classList.add('open');
+                    document.body.style.overflow = 'hidden';
+                });
+            });
+            function closeLightbox() {
+                if (!lightbox) return;
+                lightbox.classList.remove('open');
+                lightbox.setAttribute('aria-hidden', 'true');
+                document.body.style.overflow = '';
+            }
+            var content = lightbox && lightbox.querySelector('.music-lightbox-content');
+            if (overlay) overlay.addEventListener('click', closeLightbox);
+            if (content) content.addEventListener('click', closeLightbox);
+            if (closeBtn) closeBtn.addEventListener('click', closeLightbox);
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && lightbox && lightbox.classList.contains('open')) closeLightbox();
+            });
+            document.addEventListener('wheel', function(e) {
+                if (lightbox && lightbox.classList.contains('open')) {
+                    closeLightbox();
+                }
+            }, { passive: true });
+        })();
+    </script>
+</body>
+</html>
