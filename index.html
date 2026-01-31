@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio | Home</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Carousel first so it fills viewport; nav overlays it on home -->
+    <div class="carousel-container">
+        <div class="background-carousel">
+            <div class="carousel-slide active" style="background-image: url('https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920');"></div>
+            <div class="carousel-slide" style="background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920');"></div>
+            <div class="carousel-slide" style="background-image: url('https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=1920');"></div>
+            <div class="carousel-slide" style="background-image: url('https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=1920');"></div>
+            <div class="carousel-slide" style="background-image: url('https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920');"></div>
+        </div>
+        <button type="button" class="carousel-btn carousel-prev" aria-label="Previous image">
+            <span class="carousel-arrow">‹</span>
+        </button>
+        <button type="button" class="carousel-btn carousel-next" aria-label="Next image">
+            <span class="carousel-arrow">›</span>
+        </button>
+    </div>
+
+    <!-- Top navbar: overlays carousel on home -->
+    <nav class="navbar navbar-top">
+        <div class="nav-container">
+            <a href="index.html" class="logo-link">
+                <div class="logo-placeholder"></div>
+            </a>
+            <ul class="nav-tabs">
+                <li><a href="about.html" class="tab-link">About</a></li>
+                <li><a href="music.html" class="tab-link">Music</a></li>
+                <li><a href="portraiture.html" class="tab-link">Portraiture</a></li>
+                <li><a href="design.html" class="tab-link">Design</a></li>
+                <li><a href="automotive.html" class="tab-link">Automotive</a></li>
+                <li><a href="contact.html" class="tab-link">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Fixed navbar: fades in when scrolled past carousel -->
+    <nav class="navbar navbar-fixed" aria-hidden="true">
+        <div class="nav-container">
+            <a href="index.html" class="logo-link">
+                <div class="logo-placeholder"></div>
+            </a>
+            <ul class="nav-tabs">
+                <li><a href="about.html" class="tab-link">About</a></li>
+                <li><a href="music.html" class="tab-link">Music</a></li>
+                <li><a href="portraiture.html" class="tab-link">Portraiture</a></li>
+                <li><a href="design.html" class="tab-link">Design</a></li>
+                <li><a href="automotive.html" class="tab-link">Automotive</a></li>
+                <li><a href="contact.html" class="tab-link">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <section id="home">
+            <section class="image-buttons-section">
+                <div class="buttons-container">
+                    <div class="image-button">
+                        <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?w=400" alt="Button 1">
+                        <p>Project One</p>
+                    </div>
+                    <div class="image-button">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400" alt="Button 2">
+                        <p>Project Two</p>
+                    </div>
+                    <div class="image-button">
+                        <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?w=400" alt="Button 3">
+                        <p>Project Three</p>
+                    </div>
+                </div>
+            </section>
+            <div class="content-wrapper">
+                <h1>Welcome to My Portfolio</h1>
+                <p>I'm a creative professional passionate about building amazing experiences.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>© 2026 Aaron Ogawa. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,518 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    color: #333;
+    line-height: 1.6;
+    position: relative;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff;
+    overflow-x: hidden;
+}
+
+/* About, Music, Portraiture, Design, Automotive, Contact: footer flush with bottom of viewport */
+body.footer-flush {
+    display: flex;
+    flex-direction: column;
+}
+
+body.footer-flush .main-content {
+    flex: 1 0 auto;
+}
+
+/* Carousel: in document flow, only as big as browser (one viewport); content below scrolls into view naturally */
+.carousel-container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    height: 100svh;
+    height: 100dvh;
+    max-height: 100vh;
+    max-height: 100svh;
+    max-height: 100dvh;
+    overflow: hidden;
+    display: block;
+}
+
+.carousel-container.hidden {
+    display: none;
+}
+
+/* When scrolled past, hide carousel so it doesn’t show when scrolling back up */
+.carousel-container.scrolled-past {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    clip-path: inset(100% 0 0 0);
+    transition: visibility 0.3s ease, opacity 0.3s ease, clip-path 0.3s ease;
+}
+
+.background-carousel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    max-height: 100%;
+    z-index: 0;
+}
+
+.carousel-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    max-height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0;
+    transition: opacity 2s ease-in-out;
+}
+
+.carousel-slide.active {
+    opacity: 1;
+}
+
+.carousel-slide::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 60px;
+    height: 60px;
+    border: none;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.8);
+    cursor: pointer;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.3s ease;
+}
+
+.carousel-btn:hover {
+    color: #ffffff;
+}
+
+.carousel-prev {
+    left: 20px;
+}
+
+.carousel-next {
+    right: 20px;
+}
+
+.carousel-arrow {
+    font-size: 48px;
+    font-weight: 300;
+    line-height: 1;
+}
+
+/* Base navbar styles (shared) */
+.navbar {
+    padding: 0;
+    width: 100%;
+    z-index: 100;
+}
+
+/* Top navbar: overlays carousel on home (absolute); in flow on other pages (relative) */
+.navbar-top {
+    position: relative;
+    background-color: transparent;
+    z-index: 10;
+    transition: background-color 0.3s ease;
+}
+
+.carousel-container:not(.hidden) ~ .navbar-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+.navbar-top .tab-link,
+.navbar-top .tab-link.active {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.navbar-top .tab-link:hover {
+    color: #ffffff;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.6), 0 0 30px rgba(255, 255, 255, 0.4);
+}
+
+.navbar-top .logo-placeholder {
+    background-color: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.navbar-top .logo-link:hover .logo-placeholder {
+    background-color: rgba(255, 255, 255, 0.5);
+    border-color: rgba(255, 255, 255, 0.8);
+}
+
+/* Fixed navbar: below carousel, fades in when scrolled past carousel */
+.navbar-fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: #ffffff;
+    opacity: 0;
+    visibility: visible; /* Keep visible so opacity fade-out is seen when scrolling up */
+    pointer-events: none;
+    transition: opacity 0.2s ease-in-out;
+    will-change: opacity;
+}
+
+.navbar-fixed.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Applied after fade-out completes so navbar is fully hidden (no pointer events) */
+.navbar-fixed.hidden-after-fade {
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.navbar-fixed .tab-link,
+.navbar-fixed .tab-link.active {
+    color: #333;
+}
+
+.navbar-fixed .tab-link:hover {
+    color: #000;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.3), 0 0 20px rgba(0, 0, 0, 0.2), 0 0 30px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-fixed .logo-placeholder {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-color: rgba(0, 0, 0, 0.2);
+}
+
+.navbar-fixed .logo-link:hover .logo-placeholder {
+    background-color: rgba(0, 0, 0, 0.15);
+    border-color: rgba(0, 0, 0, 0.3);
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.logo-link {
+    display: block;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.logo-placeholder {
+    width: 50px;
+    height: 50px;
+    background-color: rgba(255, 255, 255, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.logo-link:hover .logo-placeholder {
+    background-color: rgba(255, 255, 255, 0.5);
+    border-color: rgba(255, 255, 255, 0.8);
+    transform: scale(1.05);
+}
+
+.nav-tabs {
+    list-style: none;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0;
+}
+
+.nav-tabs li {
+    margin: 0;
+}
+
+.tab-link {
+    display: inline-block;
+    padding: 20px 30px;
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 500;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    border-bottom: 3px solid transparent;
+    position: relative;
+}
+
+.tab-link:hover {
+    color: #ffffff;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.6), 0 0 30px rgba(255, 255, 255, 0.4);
+}
+
+/* Black text when on non-home pages */
+.navbar.on-white-page .tab-link,
+.navbar.on-white-page .tab-link.active {
+    color: #333;
+}
+
+.navbar.on-white-page .tab-link:hover {
+    color: #000;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.3), 0 0 20px rgba(0, 0, 0, 0.2), 0 0 30px rgba(0, 0, 0, 0.1);
+}
+
+.navbar.on-white-page .logo-placeholder {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-color: rgba(0, 0, 0, 0.2);
+}
+
+.navbar.on-white-page .logo-link:hover .logo-placeholder {
+    background-color: rgba(0, 0, 0, 0.15);
+    border-color: rgba(0, 0, 0, 0.3);
+}
+
+.tab-link.active {
+    color: #ffffff;
+    border-bottom-color: transparent;
+    font-weight: 600;
+}
+
+.image-buttons-section {
+    background-color: #ffffff;
+    padding: 60px 20px;
+    position: relative;
+    z-index: 5;
+    width: 100%;
+    min-width: 100%;
+    box-sizing: border-box;
+    margin-top: 0; /* Content flows right below carousel; no sudden appearance on scroll */
+}
+
+.buttons-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+.image-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    max-width: 300px;
+}
+
+.image-button:hover {
+    transform: translateY(-5px);
+}
+
+.image-button img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
+    transition: box-shadow 0.3s ease;
+}
+
+.image-button:hover img {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.image-button p {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    text-align: center;
+    margin: 0;
+}
+
+.main-content {
+    width: 100%;
+    min-width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 60px 20px;
+    position: relative;
+    z-index: 1;
+    background-color: #ffffff;
+    box-sizing: border-box;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.content-wrapper {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* About page: vertical image placeholder left, text box right */
+.about-layout {
+    display: flex;
+    align-items: stretch;
+    gap: 40px;
+    max-width: 1000px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+}
+
+.about-image-placeholder {
+    flex: 0 0 320px;
+    min-height: 480px;
+    background-color: rgba(0, 0, 0, 0.06);
+    border: 1px dashed rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+    background-clip: padding-box;
+}
+
+.about-text-box {
+    flex: 1 1 400px;
+    margin: 0;
+    min-width: 0;
+    box-shadow: none;
+    border: none;
+    outline: none;
+}
+
+.content-wrapper h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+    color: #222;
+    font-weight: 700;
+}
+
+.content-wrapper p {
+    font-size: 18px;
+    color: #666;
+    line-height: 1.8;
+}
+
+.footer {
+    background-color: #000000;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+.footer p {
+    color: #ffffff;
+    font-size: 12px;
+    margin: 0;
+    font-weight: 400;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .nav-tabs {
+        flex-wrap: wrap;
+    }
+    
+    .tab-link {
+        padding: 15px 20px;
+        font-size: 14px;
+    }
+    
+    .about-layout {
+        flex-direction: column;
+    }
+    
+    .about-image-placeholder {
+        flex: 0 0 auto;
+        width: 100%;
+        min-height: 400px;
+    }
+    
+    .about-text-box {
+        flex: 1 1 auto;
+    }
+    
+    .image-buttons-section {
+        padding: 40px 20px;
+    }
+    
+    .buttons-container {
+        gap: 30px;
+    }
+    
+    .image-button {
+        max-width: 100%;
+        width: 100%;
+    }
+    
+    .image-button img {
+        height: 180px;
+    }
+    
+    .image-button p {
+        font-size: 16px;
+    }
+    
+    .content-wrapper h1 {
+        font-size: 36px;
+    }
+    
+    .content-wrapper p {
+        font-size: 16px;
+    }
+}
