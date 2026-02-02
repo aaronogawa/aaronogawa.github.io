@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aaron Ogawa | Home</title>
+    <link rel="icon" type="image/svg+xml" href="https://file.garden/aX25ruuJQk0h7-cB/CatLogo.svg">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="noto-sans-jp">
+    <!-- Carousel first so it fills viewport; nav overlays it on home -->
+    <div class="carousel-container">
+        <div class="background-carousel">
+            <div class="carousel-slide active" style="background-image: url('https://file.garden/aX25ruuJQk0h7-cB/TakanakaStage.jpg');"></div>
+            <div class="carousel-slide" style="background-image: url('https://file.garden/aX25ruuJQk0h7-cB/Katseyegroup.jpg');"></div>
+            <div class="carousel-slide" style="background-image: url('https://file.garden/aX25ruuJQk0h7-cB/Ginger%20Root/GingerRootWheelFishEye.jpg');"></div>
+            <div class="carousel-slide" style="background-image: url('https://file.garden/aX25ruuJQk0h7-cB/A2OMAYGroup.jpg');"></div>
+            <div class="carousel-slide" style="background-image: url('https://file.garden/aX25ruuJQk0h7-cB/LovebitesHand.jpg');"></div>
+        </div>
+        <button type="button" class="carousel-btn carousel-prev" aria-label="Previous image">
+            <span class="carousel-arrow">‹</span>
+        </button>
+        <button type="button" class="carousel-btn carousel-next" aria-label="Next image">
+            <span class="carousel-arrow">›</span>
+        </button>
+    </div>
+
+    <!-- Top navbar: overlays carousel on home -->
+    <nav class="navbar navbar-top">
+        <div class="nav-container">
+            <a href="index.html" class="logo-link">
+                <img src="https://file.garden/aX25ruuJQk0h7-cB/CatLogo.svg" alt="Logo" class="logo-placeholder">
+            </a>
+            <ul class="nav-tabs">
+                <li><a href="about.html" class="tab-link">About</a></li>
+                <li><a href="music.html" class="tab-link">Music</a></li>
+                <li><a href="portraiture.html" class="tab-link">Portraiture</a></li>
+                <li><a href="design.html" class="tab-link">Design</a></li>
+                <li><a href="automotive.html" class="tab-link">Automotive</a></li>
+                <li><a href="extra.html" class="tab-link">Extra</a></li>
+                <li><a href="contact.html" class="tab-link">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Fixed navbar: fades in when scrolled past carousel -->
+    <nav class="navbar navbar-fixed" aria-hidden="true">
+        <div class="nav-container">
+            <a href="index.html" class="logo-link">
+                <img src="https://file.garden/aX25ruuJQk0h7-cB/CatLogo.svg" alt="Logo" class="logo-placeholder">
+            </a>
+            <ul class="nav-tabs">
+                <li><a href="about.html" class="tab-link">About</a></li>
+                <li><a href="music.html" class="tab-link">Music</a></li>
+                <li><a href="portraiture.html" class="tab-link">Portraiture</a></li>
+                <li><a href="design.html" class="tab-link">Design</a></li>
+                <li><a href="automotive.html" class="tab-link">Automotive</a></li>
+                <li><a href="extra.html" class="tab-link">Extra</a></li>
+                <li><a href="contact.html" class="tab-link">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <section id="home">
+            <section class="image-buttons-section">
+                <div class="buttons-container">
+                    <a href="music.html" class="image-button">
+                        <img src="https://file.garden/aX25ruuJQk0h7-cB/Asterism/MiyuVerticalBass.jpg" alt="Music">
+                        <p>Music</p>
+                    </a>
+                    <a href="portraiture.html" class="image-button">
+                        <img src="https://file.garden/aX25ruuJQk0h7-cB/Portraiture/RisaPhone.jpg" alt="Portraiture">
+                        <p>Portraiture</p>
+                    </a>
+                    <a href="design.html" class="image-button">
+                        <img src="https://file.garden/aX25ruuJQk0h7-cB/Design/eva%20poster%20low.jpg" alt="Design">
+                        <p>Design</p>
+                    </a>
+                </div>
+            </section>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>© 2026 Aaron Ogawa. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
