@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>(function(){try{if(localStorage.getItem('aaron-ogawa-dark-mode')==='1')document.documentElement.classList.add('dark-mode');}catch(e){}})();</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aaron Ogawa | Contact</title>
+    <link rel="icon" type="image/svg+xml" href="https://file.garden/aX25ruuJQk0h7-cB/CatLogo.svg">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="footer-flush noto-sans-jp">
+    <nav class="navbar navbar-top on-white-page">
+        <div class="nav-container">
+            <a href="index.html" class="logo-link">
+                <img src="https://file.garden/aX25ruuJQk0h7-cB/CatLogo.svg" alt="Logo" class="logo-placeholder">
+            </a>
+            <ul class="nav-tabs">
+                <li class="nav-dark-mode-menu-wrap"><button type="button" class="dark-mode-toggle" aria-label="Toggle dark mode" aria-pressed="false"><span class="dark-mode-toggle-icon" aria-hidden="true"><img src="https://file.garden/aX25ruuJQk0h7-cB/MoonDarkMode.svg" alt="" class="dark-mode-moon-img"><span class="dark-mode-sun-icon" aria-hidden="true" style="display:none">☀</span></span></button></li>
+                <li><a href="about.html" class="tab-link">About</a></li>
+                <li><a href="music.html" class="tab-link">Music</a></li>
+                <li><a href="portraiture.html" class="tab-link">Portraiture</a></li>
+                <li><a href="design.html" class="tab-link">Design</a></li>
+                <li><a href="automotive.html" class="tab-link">Automotive</a></li>
+                <li><a href="extra.html" class="tab-link">Extra</a></li>
+                <li><a href="contact.html" class="tab-link active">Contact</a></li>
+            </ul>
+            <button type="button" class="dark-mode-toggle" aria-label="Toggle dark mode" aria-pressed="false"><span class="dark-mode-toggle-icon" aria-hidden="true"><img src="https://file.garden/aX25ruuJQk0h7-cB/MoonDarkMode.svg" alt="" class="dark-mode-moon-img"><span class="dark-mode-sun-icon" aria-hidden="true" style="display:none">☀</span></span></button>
+            <button type="button" class="nav-menu-btn" aria-label="Open menu" aria-expanded="false">
+                <span class="nav-menu-btn-text">MENU</span>
+                <span class="nav-menu-btn-icon" aria-hidden="true"><span></span><span></span><span></span></span>
+            </button>
+        </div>
+        <button type="button" class="nav-menu-close" aria-label="Close menu">×</button>
+    </nav>
+
+    <main class="main-content">
+        <div class="content-wrapper contact-page-wrapper">
+            <h1 class="contact-title">
+                <img src="https://file.garden/aX25ruuJQk0h7-cB/CameraLogo.svg" alt="" class="contact-title-icon" aria-hidden="true">
+                <span>Contact</span>
+            </h1>
+            <form class="contact-form" id="contact-form" action="#" method="post">
+                <label for="contact-name">Name / お名前 <span class="required">*</span></label>
+                <input type="text" id="contact-name" name="name" required>
+                <label for="contact-email">Email / メールアドレス <span class="required">*</span></label>
+                <input type="email" id="contact-email" name="email" required>
+                <label for="contact-message">Message / 本文 <span class="required">*</span></label>
+                <textarea id="contact-message" name="message" rows="6" required></textarea>
+                <button type="submit" class="contact-submit">Send / 送信</button>
+            </form>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>© 2026 Aaron Ogawa. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            var name = document.getElementById('contact-name').value.trim();
+            var email = document.getElementById('contact-email').value.trim();
+            var message = document.getElementById('contact-message').value.trim();
+            var subject = 'Contact form from ' + name;
+            var body = 'Name: ' + name + '\nEmail: ' + email + '\n\nMessage:\n' + message;
+            var mailto = 'mailto:alogawa@usc.edu?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+            window.location.href = mailto;
+        });
+    </script>
+</body>
+</html>

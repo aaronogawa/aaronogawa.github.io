@@ -1,0 +1,1297 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    overflow-y: scroll; /* Reserve scrollbar space on desktop so nav words don't shift between pages */
+    scrollbar-gutter: stable;
+}
+
+.noto-sans-jp {
+    font-family: "Noto Sans JP", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+}
+
+body {
+    font-family: "Noto Sans JP", sans-serif;
+    color: #333;
+    line-height: 1.6;
+    position: relative;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff;
+    overflow-x: hidden;
+}
+
+/* About, Music, Portraiture, Design, Automotive, Contact: footer flush with bottom of viewport */
+body.footer-flush {
+    display: flex;
+    flex-direction: column;
+}
+
+body.footer-flush .main-content {
+    flex: 1 0 auto;
+}
+
+/* Disable image save: no right-click, no drag-to-save */
+img {
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    user-drag: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+/* Carousel: in document flow, only as big as browser (one viewport); content below scrolls into view naturally */
+.carousel-container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    height: 100svh;
+    height: 100dvh;
+    max-height: 100vh;
+    max-height: 100svh;
+    max-height: 100dvh;
+    overflow: hidden;
+    display: block;
+}
+
+.carousel-container.hidden {
+    display: none;
+}
+
+/* When scrolled past, hide carousel so it doesn’t show when scrolling back up */
+.carousel-container.scrolled-past {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    clip-path: inset(100% 0 0 0);
+    transition: visibility 0.3s ease, opacity 0.3s ease, clip-path 0.3s ease;
+}
+
+.background-carousel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    max-height: 100%;
+    z-index: 0;
+}
+
+.carousel-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    max-height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0;
+    transition: opacity 2s ease-in-out;
+}
+
+.carousel-slide.active {
+    opacity: 1;
+}
+
+.carousel-slide::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 60px;
+    height: 60px;
+    border: none;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.8);
+    cursor: pointer;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.3s ease;
+}
+
+.carousel-btn:hover {
+    color: #ffffff;
+}
+
+.carousel-prev {
+    left: 20px;
+}
+
+.carousel-next {
+    right: 20px;
+}
+
+.carousel-arrow {
+    font-size: 48px;
+    font-weight: 300;
+    line-height: 1;
+}
+
+/* Base navbar styles (shared) */
+.navbar {
+    padding: 0;
+    width: 100%;
+    z-index: 100;
+}
+
+/* Top navbar: overlays carousel on home (absolute); in flow on other pages (relative) */
+.navbar-top {
+    position: relative;
+    background-color: transparent;
+    z-index: 10;
+    transition: background-color 0.3s ease;
+    padding-top: 16px;
+}
+
+.navbar-top .nav-tabs {
+    gap: 24px;
+}
+
+.carousel-container:not(.hidden) ~ .navbar-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+.navbar-top .tab-link,
+.navbar-top .tab-link.active {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.navbar-top .tab-link:hover {
+    color: #ffffff;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.6), 0 0 30px rgba(255, 255, 255, 0.4);
+}
+
+
+/* Fixed navbar: below carousel, fades in when scrolled past carousel */
+.navbar-fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: #ffffff;
+    opacity: 0;
+    visibility: visible; /* Keep visible so opacity fade-out is seen when scrolling up */
+    pointer-events: none;
+    transition: opacity 0.2s ease-in-out;
+    will-change: opacity;
+}
+
+.navbar-fixed.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Applied after fade-out completes so navbar is fully hidden (no pointer events) */
+.navbar-fixed.hidden-after-fade {
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.navbar-fixed .tab-link,
+.navbar-fixed .tab-link.active {
+    color: #333;
+}
+
+.navbar-fixed .tab-link:hover {
+    color: #000;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.3), 0 0 20px rgba(0, 0, 0, 0.2), 0 0 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Fixed navbar (light mode): show moon icon in dark color on white bar */
+.navbar-fixed .dark-mode-toggle {
+    color: #333;
+}
+.navbar-fixed .dark-mode-toggle:hover {
+    color: #000;
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.logo-link {
+    display: block;
+    text-decoration: none;
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+    min-width: 50px;
+    min-height: 50px;
+    flex-shrink: 0;
+}
+
+.logo-placeholder {
+    width: 50px;
+    height: 50px;
+    min-width: 50px;
+    min-height: 50px;
+    object-fit: contain;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.logo-link:hover .logo-placeholder {
+    transform: scale(1.05);
+}
+
+.nav-tabs {
+    list-style: none;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0;
+}
+
+.nav-tabs li {
+    margin: 0;
+}
+/* Hide toggle-in-menu on desktop (toggle stays next to Contact / MENU) */
+.nav-tabs li.nav-dark-mode-menu-wrap {
+    display: none;
+}
+
+.tab-link {
+    display: inline-block;
+    padding: 20px 30px;
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 500;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    border-bottom: 3px solid transparent;
+    position: relative;
+}
+
+.tab-link:hover {
+    color: #ffffff;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.6), 0 0 30px rgba(255, 255, 255, 0.4);
+}
+
+/* Top navbar: inverted (dark) text on about, music, portraiture, design, automotive, extra, contact */
+.navbar-top.on-white-page .tab-link,
+.navbar-top.on-white-page .tab-link.active {
+    color: #333;
+}
+
+.navbar-top.on-white-page .tab-link:hover {
+    color: #000;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.3), 0 0 20px rgba(0, 0, 0, 0.2), 0 0 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Fixed navbar and any other .on-white-page (keep in sync) */
+.navbar.on-white-page .tab-link,
+.navbar.on-white-page .tab-link.active {
+    color: #333;
+}
+
+.navbar.on-white-page .tab-link:hover {
+    color: #000;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.3), 0 0 20px rgba(0, 0, 0, 0.2), 0 0 30px rgba(0, 0, 0, 0.1);
+}
+
+
+.tab-link.active {
+    color: #ffffff;
+    border-bottom-color: transparent;
+    font-weight: 600;
+}
+
+/* Dark mode toggle: next to Contact */
+.dark-mode-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    margin-left: 4px;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.85);
+    transition: color 0.2s ease, transform 0.2s ease;
+    flex-shrink: 0;
+}
+.dark-mode-toggle:hover {
+    color: #fff;
+    transform: scale(1.08);
+}
+.navbar-top.on-white-page .dark-mode-toggle {
+    color: #333;
+}
+.navbar-top.on-white-page .dark-mode-toggle:hover {
+    color: #000;
+}
+.navbar.on-white-page .dark-mode-toggle {
+    color: #333;
+}
+.navbar.on-white-page .dark-mode-toggle:hover {
+    color: #000;
+}
+.dark-mode-toggle-icon {
+    font-size: 1.25rem;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.dark-mode-moon-img {
+    width: 1.25rem;
+    height: 1.25rem;
+    display: block;
+    vertical-align: middle;
+    filter: brightness(0);
+}
+/* Home page (index): top nav is white, so moon matches */
+.navbar-top:not(.on-white-page) .dark-mode-moon-img {
+    filter: brightness(0) invert(1);
+}
+.dark-mode-sun-icon {
+    font-size: 1.25rem;
+    line-height: 1;
+}
+html.dark-mode .dark-mode-toggle {
+    color: rgba(255, 255, 255, 0.9);
+}
+html.dark-mode .dark-mode-toggle:hover {
+    color: #fff;
+}
+html.dark-mode .navbar.on-white-page .dark-mode-toggle {
+    color: #e0e0e0;
+}
+html.dark-mode .navbar.on-white-page .dark-mode-toggle:hover {
+    color: #fff;
+}
+
+/* Mobile menu button (hidden on desktop) */
+.nav-menu-btn {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    border: none;
+    background: transparent;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    cursor: pointer;
+    border-radius: 0;
+    -webkit-tap-highlight-color: transparent;
+}
+.navbar-top:not(.on-white-page) .nav-menu-btn {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Mobile menu close button (X) - shown when menu is open */
+.nav-menu-close {
+    display: none;
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 151;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    font-size: 28px;
+    line-height: 1;
+    color: #333;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.nav-menu-btn-text {
+    letter-spacing: 0.02em;
+}
+.nav-menu-btn-icon {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    width: 20px;
+    height: 14px;
+    box-sizing: border-box;
+}
+.nav-menu-btn-icon span {
+    display: block;
+    width: 100%;
+    height: 2px;
+    min-height: 2px;
+    max-height: 2px;
+    flex-shrink: 0;
+    flex-grow: 0;
+    background: currentColor;
+    border-radius: 0;
+    box-sizing: border-box;
+}
+
+.image-buttons-section {
+    background-color: #ffffff;
+    padding: 60px 20px;
+    position: relative;
+    z-index: 5;
+    width: 100%;
+    min-width: 100%;
+    box-sizing: border-box;
+    margin-top: 0; /* Content flows right below carousel; no sudden appearance on scroll */
+}
+
+.buttons-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+.image-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    max-width: 420px;
+    text-decoration: none;
+    flex: 1;
+    min-width: 280px;
+}
+
+
+.image-button img {
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+    border-radius: 0;
+    margin-bottom: 15px;
+}
+
+.image-button p {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    text-align: center;
+    margin: 0;
+}
+
+.main-content {
+    width: 100%;
+    min-width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 60px 20px;
+    position: relative;
+    z-index: 1;
+    background-color: #ffffff;
+    box-sizing: border-box;
+}
+
+.extra-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+}
+.extra-soon {
+    font-size: 4rem;
+    font-weight: 700;
+    text-align: center;
+    margin: 0;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.content-wrapper {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* About page: vertical image placeholder left, text box right */
+.about-layout {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    max-width: 1000px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+}
+
+.about-image-placeholder {
+    flex: 0 0 auto;
+    width: 313px; /* static horizontal width */
+    max-width: 313px;
+    background-color: rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    position: relative;
+}
+.about-image-placeholder img {
+    width: 100%;
+    height: auto;
+    display: block;
+    vertical-align: top;
+}
+
+.about-text-box {
+    flex: 1 1 400px;
+    margin: 0;
+    min-width: 0;
+    box-shadow: none;
+    border: none;
+    outline: none;
+}
+.about-text-box p {
+    text-align: left;
+    max-width: 560px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.about-text-box p + p {
+    margin-top: 1.25em;
+}
+.about-text-box .about-social-links {
+    margin-left: auto;
+    margin-right: auto;
+}
+.about-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.about-title-icon {
+    width: 1em;
+    height: 1em;
+    flex-shrink: 0;
+}
+
+/* About page: social/school logo links (LinkedIn, Instagram, Annenberg) */
+.about-social-links {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-top: 24px;
+}
+.about-social-link {
+    display: inline-block;
+    line-height: 0;
+    transition: opacity 0.2s ease;
+}
+.about-social-link img {
+    display: block;
+    width: 28px;
+    height: 28px;
+    transition: filter 0.2s ease;
+}
+.about-social-link:hover img {
+    filter: brightness(0) saturate(100%) invert(70%) sepia(40%) saturate(600%) hue-rotate(180deg);
+}
+
+.contact-title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-weight: bold;
+    gap: 0;
+}
+.contact-title-icon {
+    width: 2.25em;
+    height: 2.25em;
+    flex-shrink: 0;
+}
+
+/* Music page: three equal rows (3×3 grid) for photographs */
+.music-gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 16px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px 60px;
+}
+
+/* Music page: masonry-style flow so white space is filled, equal spacing */
+.gallery-aspect-3-2 {
+    display: block;
+    column-count: 3;
+    column-gap: 16px;
+    grid-template-columns: unset;
+    grid-template-rows: unset;
+}
+/* Music page: 3 columns (Left | Middle | Right), equal gaps */
+.gallery-music {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    max-width: 1200px;
+}
+.gallery-column {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.gallery-aspect-3-2 .music-photo {
+    aspect-ratio: unset;
+    height: auto;
+    break-inside: avoid;
+    margin-bottom: 0;
+}
+.gallery-music .music-photo {
+    margin-bottom: 0;
+}
+.gallery-aspect-3-2 .music-photo:last-child {
+    margin-bottom: 0;
+}
+/* Frame matches image aspect ratio: width fixed (column width), height follows image */
+.gallery-aspect-3-2 .music-photo img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    display: block;
+}
+
+/* Portraiture & Design: two columns, same page width, bigger images */
+.gallery-aspect-3-2.gallery-two-col {
+    column-count: 2;
+}
+.gallery-music.gallery-two-col {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+.gallery-music.gallery-two-col .gallery-column {
+    gap: 12px;
+}
+
+.music-photo {
+    aspect-ratio: 4 / 3;
+    background-color: rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.music-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    background-color: rgba(0, 0, 0, 0.06);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+.music-gallery .music-photo img.loaded {
+    opacity: 1;
+}
+
+/* Music lightbox: view image full-screen when clicking a photo */
+.music-lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+.music-lightbox.open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.music-lightbox-overlay {
+    position: absolute;
+    inset: 0;
+    background-color: #000;
+    cursor: pointer;
+}
+
+.music-lightbox-content {
+    position: relative;
+    z-index: 1;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.music-lightbox-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    background: #000;
+}
+
+.music-lightbox-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 36px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 4px 8px;
+    opacity: 0.9;
+    z-index: 2;
+}
+
+.music-lightbox-close:hover {
+    opacity: 1;
+}
+
+.content-wrapper h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+    color: #222;
+    font-weight: 700;
+}
+
+.content-wrapper p {
+    font-size: 18px;
+    color: #666;
+    line-height: 1.8;
+}
+
+/* Contact page: no drop shadow, centered content */
+.main-content:has(.contact-page-wrapper) {
+    padding-top: 12px;
+}
+
+.contact-page-wrapper {
+    box-shadow: none;
+    text-align: center;
+}
+
+.contact-page-wrapper .contact-form {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+}
+
+.contact-page-wrapper .contact-form label {
+    text-align: left;
+}
+
+/* Contact page form */
+.contact-form {
+    margin-top: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 560px;
+}
+
+.contact-form label {
+    font-size: 16px;
+    font-weight: 600;
+    color: #222;
+    margin-bottom: -8px;
+}
+
+.contact-form .required {
+    color: red;
+}
+
+.contact-form input,
+.contact-form textarea {
+    font-family: inherit;
+    font-size: 16px;
+    padding: 12px 14px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 0;
+    background-color: #fff;
+    color: #333;
+    box-sizing: border-box;
+    width: 100%;
+    text-align: left;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+    outline: none;
+    border-color: #333;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.08);
+}
+
+.contact-form textarea {
+    min-height: 140px;
+    resize: vertical;
+}
+
+.contact-form .contact-submit {
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    background-color: #222;
+    border: none;
+    border-radius: 0;
+    padding: 14px 24px;
+    cursor: pointer;
+    margin-top: 8px;
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content;
+    display: block;
+    transition: background-color 0.2s ease;
+}
+
+.contact-form .contact-submit:hover {
+    background-color: #000;
+}
+
+.footer {
+    background-color: #ffffff;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+.footer p {
+    color: #333;
+    font-size: 12px;
+    margin: 0;
+    font-weight: 400;
+}
+
+/* ---------- Dark mode ---------- */
+html.dark-mode {
+    background-color: #0f0f0f;
+    color: #e5e5e5;
+}
+html.dark-mode body {
+    background-color: #0f0f0f;
+    color: #e5e5e5;
+}
+html.dark-mode .main-content,
+html.dark-mode .image-buttons-section {
+    background-color: #0f0f0f;
+}
+html.dark-mode .image-button p {
+    color: #e5e5e5;
+}
+html.dark-mode .content-wrapper {
+    background-color: rgba(30, 30, 30, 0.98);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+html.dark-mode .content-wrapper h1 {
+    color: #f0f0f0;
+}
+html.dark-mode .content-wrapper p {
+    color: #c0c0c0;
+}
+html.dark-mode .about-text-box p {
+    color: #c0c0c0;
+}
+html.dark-mode .about-image-placeholder {
+    background-color: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+html.dark-mode .about-title,
+html.dark-mode .about-title .about-title-icon {
+    color: #f0f0f0;
+}
+/* About page dark mode: no box around text */
+html.dark-mode .about-text-box.content-wrapper {
+    background-color: transparent;
+    box-shadow: none;
+}
+/* Contact page dark mode: no box around text */
+html.dark-mode .contact-page-wrapper {
+    background-color: transparent;
+    box-shadow: none;
+}
+/* About page dark mode: social link SVGs white; blue fade on hover via opacity crossfade */
+html.dark-mode .about-social-link {
+    position: relative;
+}
+html.dark-mode .about-social-link img {
+    filter: brightness(0) invert(1);
+    position: relative;
+    z-index: 0;
+}
+html.dark-mode .about-social-link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 28px;
+    height: 28px;
+    background-size: 28px 28px;
+    background-repeat: no-repeat;
+    background-position: center;
+    filter: brightness(0) saturate(100%) invert(70%) sepia(40%) saturate(600%) hue-rotate(180deg);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    z-index: 1;
+    pointer-events: none;
+}
+html.dark-mode .about-social-link:hover::after {
+    opacity: 1;
+}
+html.dark-mode .about-social-linkedin::after {
+    background-image: url(https://file.garden/aX25ruuJQk0h7-cB/linkedin.svg);
+}
+html.dark-mode .about-social-instagram::after {
+    background-image: url(https://file.garden/aX25ruuJQk0h7-cB/insta.svg);
+}
+html.dark-mode .about-social-annenberg::after {
+    background-image: url(https://file.garden/aX25ruuJQk0h7-cB/annenberg.svg);
+}
+html.dark-mode .music-photo {
+    background-color: rgba(255, 255, 255, 0.06);
+}
+html.dark-mode .music-photo img {
+    background-color: rgba(255, 255, 255, 0.04);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+html.dark-mode .music-gallery .music-photo img.loaded {
+    opacity: 1;
+}
+html.dark-mode .footer {
+    background-color: #0f0f0f;
+}
+html.dark-mode .footer p {
+    color: #a0a0a0;
+}
+html.dark-mode .contact-form label {
+    color: #e0e0e0;
+}
+html.dark-mode .contact-form .required {
+    color: #ff8080;
+}
+html.dark-mode .contact-form input,
+html.dark-mode .contact-form textarea {
+    background-color: #1a1a1a;
+    color: #e5e5e5;
+    border-color: rgba(255, 255, 255, 0.2);
+}
+html.dark-mode .contact-form input:focus,
+html.dark-mode .contact-form textarea:focus {
+    border-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+}
+html.dark-mode .contact-form .contact-submit {
+    background-color: #e5e5e5;
+    color: #111;
+}
+html.dark-mode .contact-form .contact-submit:hover {
+    background-color: #fff;
+}
+html.dark-mode .extra-soon {
+    color: #e5e5e5;
+}
+/* Mobile full-screen menu in dark mode */
+/* Top navbar on about/music/portraiture/design/automotive/extra/contact: white text in dark mode */
+html.dark-mode .navbar-top.on-white-page .tab-link,
+html.dark-mode .navbar-top.on-white-page .tab-link.active {
+    color: rgba(255, 255, 255, 0.9);
+}
+html.dark-mode .navbar-top.on-white-page .tab-link:hover {
+    color: #fff;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.3);
+}
+html.dark-mode .navbar-top.on-white-page .dark-mode-toggle {
+    color: rgba(255, 255, 255, 0.9);
+}
+html.dark-mode .navbar-top.on-white-page .dark-mode-toggle:hover {
+    color: #fff;
+}
+html.dark-mode .nav-menu-btn {
+    color: rgba(255, 255, 255, 0.95);
+}
+html.dark-mode .nav-menu-btn:hover {
+    color: #fff;
+}
+
+/* Fixed (reappearing) navbar: black with white text in dark mode */
+html.dark-mode .navbar-fixed {
+    background-color: #111;
+}
+html.dark-mode .navbar-fixed .tab-link,
+html.dark-mode .navbar-fixed .tab-link.active {
+    color: rgba(255, 255, 255, 0.9);
+}
+html.dark-mode .navbar-fixed .tab-link:hover {
+    color: #fff;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.4), 0 0 20px rgba(255, 255, 255, 0.2);
+}
+html.dark-mode .navbar-fixed .dark-mode-toggle {
+    color: rgba(255, 255, 255, 0.9);
+}
+html.dark-mode .navbar-fixed .dark-mode-toggle:hover {
+    color: #fff;
+}
+
+/* Mobile menu in dark mode: black background, white text (menu-open is on body) */
+html.dark-mode body.menu-open .navbar-top .nav-tabs {
+    background: #111;
+}
+html.dark-mode body.menu-open .navbar-top .nav-tabs .tab-link {
+    color: #e5e5e5;
+    border-bottom-color: rgba(255, 255, 255, 0.15);
+}
+html.dark-mode body.menu-open .navbar-top .nav-tabs .tab-link:hover,
+html.dark-mode body.menu-open .navbar-top .nav-tabs .tab-link.active {
+    color: #fff;
+    font-weight: 600;
+}
+html.dark-mode body.menu-open .navbar-top .nav-tabs li:last-child .tab-link {
+    border-bottom: none;
+}
+html.dark-mode body.menu-open .navbar-top .nav-tabs .nav-dark-mode-menu-wrap {
+    border-bottom: none;
+}
+html.dark-mode body.menu-open .navbar-top .nav-tabs .nav-dark-mode-menu-wrap .dark-mode-toggle {
+    color: #fff;
+}
+html.dark-mode body.menu-open .navbar-top .nav-tabs .nav-dark-mode-menu-wrap .dark-mode-moon-img {
+    filter: brightness(0) invert(1);
+}
+html.dark-mode body.menu-open .nav-menu-close {
+    color: #fff;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    /* Hide the reappearing fixed navbar on mobile when scrolling down */
+    .navbar-fixed {
+        visibility: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+    }
+    
+    /* Hide dark mode button in header on mobile (toggle is in menu above About) */
+    .navbar-top .nav-container > .dark-mode-toggle {
+        display: none !important;
+    }
+    
+    .nav-menu-btn {
+        display: flex;
+        margin-left: auto;
+        padding-right: 0;
+    }
+    
+    .nav-tabs {
+        display: none;
+        flex-wrap: wrap;
+    }
+    
+    /* Mobile menu open: show nav links as full-screen overlay (use top nav's list) */
+    body.menu-open .navbar-top .nav-tabs {
+        display: flex;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 0;
+        background: #ffffff;
+        z-index: 150;
+        padding: 80px 24px 40px;
+        list-style: none;
+        margin: 0;
+        text-align: center;
+        box-sizing: border-box;
+    }
+    body.menu-open .navbar-fixed .nav-tabs {
+        display: none;
+    }
+    /* Hide header toggle when menu open; show toggle as first menu item above About */
+    body.menu-open .navbar-top .nav-container > .dark-mode-toggle {
+        display: none !important;
+    }
+    /* Dark mode toggle as first item in mobile menu, above About */
+    body.menu-open .navbar-top .nav-tabs li.nav-dark-mode-menu-wrap {
+        display: flex !important;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        padding: 18px 20px 12px;
+        border-bottom: none;
+    }
+    body.menu-open .navbar-top .nav-tabs .nav-dark-mode-menu-wrap .dark-mode-toggle {
+        padding: 0;
+        margin: 0;
+        background: transparent;
+        border: none;
+        color: #333;
+        font-size: 28px;
+        width: 44px;
+        height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    body.menu-open .navbar-top .nav-tabs .nav-dark-mode-menu-wrap .dark-mode-moon-img {
+        width: 28px;
+        height: 28px;
+    }
+    body.menu-open .navbar-top .nav-tabs .nav-dark-mode-menu-wrap .dark-mode-sun-icon {
+        font-size: 28px;
+    }
+    body.menu-open .navbar-top .nav-tabs .tab-link {
+        display: block;
+        width: 100%;
+        text-align: center;
+        padding: 18px 20px;
+        font-size: 18px;
+        color: #333;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    }
+    body.menu-open .navbar-top .nav-tabs .tab-link:hover,
+    body.menu-open .navbar-top .nav-tabs .tab-link.active {
+        color: #000;
+        font-weight: 600;
+    }
+    body.menu-open .navbar-top .nav-tabs li:last-child .tab-link {
+        border-bottom: none;
+    }
+    body.menu-open .nav-menu-close {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .tab-link {
+        padding: 15px 20px;
+        font-size: 14px;
+    }
+    
+    .about-layout {
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .about-image-placeholder {
+        flex: 0 0 auto;
+        width: 100%;
+        max-width: 100%;
+    }
+    
+    .about-text-box {
+        flex: 1 1 auto;
+    }
+    
+    .music-gallery {
+        grid-template-columns: repeat(1, 1fr);
+        padding: 0 16px 40px;
+    }
+    .gallery-aspect-3-2 {
+        column-count: 1;
+    }
+    .gallery-music.gallery-two-col {
+        grid-template-columns: repeat(1, 1fr);
+    }
+    
+    .image-buttons-section {
+        padding: 40px 12px;
+    }
+    
+    .buttons-container {
+        gap: 10px;
+        flex-direction: row;
+        flex-wrap: nowrap;
+    }
+    
+    .image-button {
+        flex: 1;
+        min-width: 0;
+        max-width: none;
+    }
+    
+    .image-button img {
+        aspect-ratio: 2 / 3;
+    }
+    
+    .image-button p {
+        font-size: 16px;
+    }
+    
+    .content-wrapper h1 {
+        font-size: 36px;
+    }
+    
+    .content-wrapper p {
+        font-size: 16px;
+    }
+}
